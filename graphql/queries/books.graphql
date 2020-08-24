@@ -1,0 +1,13 @@
+query FetchBooks($title: String) {
+  books(title: $title) {
+    title
+    author {
+        id
+        name
+        detail {
+            birthday
+            sex
+        }
+    }
+  }
+}

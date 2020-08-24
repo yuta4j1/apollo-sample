@@ -1,48 +1,43 @@
 import express from "express"
-import { ApolloServer, gql } from "apollo-server-express"
+import { ApolloServer } from "apollo-server-express"
+import { QueryResolvers, Book, Author, Resolvers } from "./gen/types"
 
-const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
+const Query: QueryResolvers = {
+  books: (parent, args, context, info) => {
+    if (args.title) {
+      return books.filter(v => v.title.indexOf(args.title) !== -1)
+    } else {
+      return books
+    }
+  },
+}
 
-  type Query {
-    books(title: String): [Book]
-  }
-`
+const authorA: Author = {
+  id: "1",
+  name: "test",
+}
 
-type Book = {
-  title: string
-  author: string
+const authorB: Author = {
+  id: "2",
+  name: "test2",
 }
 
 const books: Book[] = [
   {
     title: "Harry Potter and the Chamber of Secrets",
-    author: "J.K. Rowling",
+    author: authorA,
   },
   {
     title: "Jurassic Park",
-    author: "Michael Crichton",
+    author: authorB,
   },
 ]
 
-const resolvers = {
-  Query: {
-    books: (parent, args, context, info) => {
-      console.log(args.title)
-      // 文字列が部分一致しているものを返す
-      if (args.title) {
-        return books.filter(v => v.title.indexOf(args.title) !== -1)
-      } else {
-        return books
-      }
-    },
-  },
+const resolvers: Resolvers = {
+  Query,
 }
 
-const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({ resolvers })
 const app = express()
 server.applyMiddleware({ app })
 app.listen({ port: 4000 }, () => {
