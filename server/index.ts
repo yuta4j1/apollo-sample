@@ -1,6 +1,6 @@
-import express from "express"
-import { ApolloServer } from "apollo-server-express"
+import { ApolloServer, gql } from "apollo-server"
 import { QueryResolvers, Book, Author, Resolvers } from "./gen/types"
+import fs from "fs"
 
 const Query: QueryResolvers = {
   books: (parent, args, context, info) => {
@@ -11,6 +11,9 @@ const Query: QueryResolvers = {
     }
   },
 }
+
+const typeDefs = gql(fs.readFileSync("./graphql/schema.graphql", "utf-8"))
+
 
 const authorA: Author = {
   id: "1",
@@ -37,9 +40,7 @@ const resolvers: Resolvers = {
   Query,
 }
 
-const server = new ApolloServer({ resolvers })
-const app = express()
-server.applyMiddleware({ app })
-app.listen({ port: 4000 }, () => {
+const server = new ApolloServer({ resolvers, typeDefs })
+server.listen({ port: 4000 }, () => {
   console.log(`Server ready for http://localhost:4000${server.graphqlPath}`)
 })
