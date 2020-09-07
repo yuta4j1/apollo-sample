@@ -19,7 +19,7 @@
     "@graphql-codegen/introspection": "1.17.8",
     "@graphql-codegen/typescript": "1.17.8",
     "@graphql-codegen/typescript-operations": "1.17.8",
-    "@graphql-codegen/typescript-react-apollo": "1.17.8",
+    "@graphql-codegen/typescript-react-apollo": "1.17.8-alpha-f79b3113.0",
     "@graphql-codegen/typescript-resolvers": "1.17.9",
     "@types/express": "4.17.8",
     "@types/node": "14.6.3",
