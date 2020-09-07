@@ -1,25 +1,33 @@
-  enum Sex {
-    MALE
-    FEMALE
-    NONE
-  }
+enum Sex {
+  MALE
+  FEMALE
+  NONE
+}
 
-  type AuthorDetail {
-    birthday: String
-    sex: Sex
-  }
+type AuthorDetail {
+  birthday: String
+  sex: Sex
+}
 
-  type Author {
-    id: String!
-    name: String!
-    detail: AuthorDetail
-  }
-  
-  type Book {
-    title: String
-    author: Author
-  }
+type Author {
+  id: String!
+  name: String!
+  detail: AuthorDetail
+}
 
-  type Query {
-    books(title: String): [Book]
-  }
+type Book {
+  title: String
+  author: Author
+}
+
+type Publisher {
+  id: ID!
+  name: String!
+  address: String
+  capital: Int!
+}
+
+type Query {
+  books(title: String): [Book]
+  publishers: [Publisher]
+}

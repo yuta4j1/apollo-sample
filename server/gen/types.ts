@@ -36,9 +36,18 @@ export type Book = {
   author?: Maybe<Author>;
 };
 
+export type Publisher = {
+  __typename?: 'Publisher';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  address?: Maybe<Scalars['String']>;
+  capital: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   books?: Maybe<Array<Maybe<Book>>>;
+  publishers?: Maybe<Array<Maybe<Publisher>>>;
 };
 
 
@@ -129,6 +138,9 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Author: ResolverTypeWrapper<Author>;
   Book: ResolverTypeWrapper<Book>;
+  Publisher: ResolverTypeWrapper<Publisher>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Query: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
@@ -139,6 +151,9 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Author: Author;
   Book: Book;
+  Publisher: Publisher;
+  ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Query: {};
   Boolean: Scalars['Boolean'];
 };
@@ -162,14 +177,24 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
+export type PublisherResolvers<ContextType = any, ParentType extends ResolversParentTypes['Publisher'] = ResolversParentTypes['Publisher']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  address?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  capital?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType, RequireFields<QueryBooksArgs, never>>;
+  publishers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Publisher']>>>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   AuthorDetail?: AuthorDetailResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
+  Publisher?: PublisherResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 

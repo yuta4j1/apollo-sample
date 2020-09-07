@@ -1,15 +1,25 @@
 import React from "react"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { ApolloProvider } from "@apollo/client"
 import { client } from "../apollo"
-import SomethingList from "../components/SomethingList"
+import IndexPage from "."
+import RegistertPage from "./Register"
+
+const Router: React.FC<{}> = () => {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" component={IndexPage} exact />
+        <Route path="/register" component={RegistertPage} exact />
+      </Switch>
+    </BrowserRouter>
+  )
+}
 
 const App: React.FC<{}> = () => {
   return (
     <ApolloProvider client={client}>
-      <div>
-        <h1>{"Apollo Sample"}</h1>
-      </div>
-      <SomethingList />
+      <Router />
     </ApolloProvider>
   )
 }

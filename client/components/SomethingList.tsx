@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react"
-import { useLazyQuery } from "@apollo/client"
-import { FETCH_BOOKS } from "../apollo/query/sample"
-import { Books, BooksQuery } from "../types/apolloQuery"
+import { useFetchBooksLazyQuery } from "../gen/types"
+import { useHistory } from "react-router-dom"
 
 const SomethingList: React.FC<{}> = () => {
-  const [fetchBooks, { error, loading, data }] = useLazyQuery<
-    Books,
-    BooksQuery
-  >(FETCH_BOOKS)
+  const [fetchBooks, { error, loading, data }] = useFetchBooksLazyQuery()
   const [searchParam, setSearchParam] = useState("")
+
+  const history = useHistory()
+
+  console.log("updated!")
 
   useEffect(() => {
     fetchBooks()
@@ -20,7 +20,7 @@ const SomethingList: React.FC<{}> = () => {
       {!loading && data ? (
         <ul>
           {data.books.map((v, i) => (
-            <li key={i}>{`author: ${v.author}  title: ${v.title}`}</li>
+            <li key={i}>{`author: ${v.author.name}  title: ${v.title}`}</li>
           ))}
         </ul>
       ) : (
@@ -42,6 +42,11 @@ const SomethingList: React.FC<{}> = () => {
       >
         {"再ロード"}
       </button>
+      <div>
+        <button onClick={e => history.push("/register")}>
+          {"書籍情報を変更"}
+        </button>
+      </div>
     </div>
   )
 }

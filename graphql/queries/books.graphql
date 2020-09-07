@@ -1,6 +1,6 @@
 query FetchBooks($title: String) {
   books(title: $title) {
-    title
+    title @client
     author {
         id
         name
@@ -9,5 +9,14 @@ query FetchBooks($title: String) {
             sex
         }
     }
+  }
+}
+
+query FetchPublishers {
+  publishers {
+    id
+    name
+    address
+    capital
   }
 }
