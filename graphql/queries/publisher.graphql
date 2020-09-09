@@ -1,0 +1,8 @@
+query FetchPublishers {
+  publishers {
+    id
+    name
+    address
+    capital
+  }
+}

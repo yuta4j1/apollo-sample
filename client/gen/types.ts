@@ -91,7 +91,7 @@ export type FetchPublishersQuery = (
 export const FetchBooksDocument = gql`
     query FetchBooks($title: String) {
   books(title: $title) {
-    title @client
+    title
     author {
       id
       name
