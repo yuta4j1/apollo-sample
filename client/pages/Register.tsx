@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useHistory } from "react-router-dom"
 import {
   useFetchBooksQuery,
-  useFetchPublishersLazyQuery,
+  useFetchPublishersQuery,
   useCreatePublisherMutation,
 } from "../gen/types"
 import EditBook from "../components/EditBook"
@@ -10,34 +10,31 @@ import PublisherForm from "../components/PublisherForm"
 import PublisherRow from "../components/PublisherRow"
 
 const RegisterPage: React.FC<{}> = () => {
-  const booksResult = useFetchBooksQuery()
-  const [fetchPublishers, publisherResult] = useFetchPublishersLazyQuery({
-    fetchPolicy: "network-only",
-  })
+  const { data: booksData, loading: booksLoading } = useFetchBooksQuery()
+  const {
+    data: publisherData,
+    refetch: publisherRefetch,
+  } = useFetchPublishersQuery()
   const [createPublisher, { data }] = useCreatePublisherMutation()
-  useEffect(() => {
-    fetchPublishers()
-  }, [])
-  console.log("[RegisterPage] loading", booksResult.loading)
+
+  console.log("[RegisterPage] loading", booksLoading)
   const history = useHistory()
   console.log("[RegisterPage] updated⭐️")
 
   return (
     <div>
-      {!booksResult.data ||
-      (!!booksResult.data && booksResult.data.books.length === 0) ? (
+      {!booksData || (!!booksData && booksData.books.length === 0) ? (
         <p>{"No Items!!"}</p>
       ) : (
-        booksResult.data.books.map((v, i) => <EditBook key={i} book={v} />)
+        booksData.books.map((v, i) => <EditBook key={i} book={v} />)
       )}
       <div>
-        {!publisherResult.data ||
-        (!!publisherResult.data &&
-          publisherResult.data.publishers.length === 0) ? (
+        {!publisherData ||
+        (!!publisherData && publisherData.publishers.length === 0) ? (
           <p>{"Nodata..."}</p>
         ) : (
           <div>
-            {publisherResult.data.publishers.map((v, i) => (
+            {publisherData.publishers.map((v, i) => (
               <PublisherRow key={i} {...v} />
             ))}
           </div>
@@ -54,7 +51,7 @@ const RegisterPage: React.FC<{}> = () => {
               },
             },
           })
-          fetchPublishers()
+          publisherRefetch()
         }}
       />
       <div>
