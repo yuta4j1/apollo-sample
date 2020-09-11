@@ -55,6 +55,35 @@ export type QueryBooksArgs = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type PublisherInput = {
+  name: Scalars['String'];
+  address: Scalars['String'];
+  capital: Scalars['Int'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createPublisher?: Maybe<Array<Publisher>>;
+};
+
+
+export type MutationCreatePublisherArgs = {
+  input: PublisherInput;
+};
+
+export type CreatePublisherMutationVariables = Exact<{
+  publisher: PublisherInput;
+}>;
+
+
+export type CreatePublisherMutation = (
+  { __typename?: 'Mutation' }
+  & { createPublisher?: Maybe<Array<(
+    { __typename?: 'Publisher' }
+    & Pick<Publisher, 'id' | 'name' | 'address' | 'capital'>
+  )>> }
+);
+
 export type FetchBooksQueryVariables = Exact<{
   title?: Maybe<Scalars['String']>;
 }>;
@@ -88,6 +117,41 @@ export type FetchPublishersQuery = (
 );
 
 
+export const CreatePublisherDocument = gql`
+    mutation CreatePublisher($publisher: PublisherInput!) {
+  createPublisher(input: $publisher) {
+    id
+    name
+    address
+    capital
+  }
+}
+    `;
+export type CreatePublisherMutationFn = Apollo.MutationFunction<CreatePublisherMutation, CreatePublisherMutationVariables>;
+
+/**
+ * __useCreatePublisherMutation__
+ *
+ * To run a mutation, you first call `useCreatePublisherMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePublisherMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPublisherMutation, { data, loading, error }] = useCreatePublisherMutation({
+ *   variables: {
+ *      publisher: // value for 'publisher'
+ *   },
+ * });
+ */
+export function useCreatePublisherMutation(baseOptions?: Apollo.MutationHookOptions<CreatePublisherMutation, CreatePublisherMutationVariables>) {
+        return Apollo.useMutation<CreatePublisherMutation, CreatePublisherMutationVariables>(CreatePublisherDocument, baseOptions);
+      }
+export type CreatePublisherMutationHookResult = ReturnType<typeof useCreatePublisherMutation>;
+export type CreatePublisherMutationResult = Apollo.MutationResult<CreatePublisherMutation>;
+export type CreatePublisherMutationOptions = Apollo.BaseMutationOptions<CreatePublisherMutation, CreatePublisherMutationVariables>;
 export const FetchBooksDocument = gql`
     query FetchBooks($title: String) {
   books(title: $title) {

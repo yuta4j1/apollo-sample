@@ -1,14 +1,27 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useHistory } from "react-router-dom"
-import { useFetchBooksQuery, useFetchPublishersQuery } from "../gen/types"
+import {
+  useFetchBooksQuery,
+  useFetchPublishersLazyQuery,
+  useCreatePublisherMutation,
+} from "../gen/types"
 import EditBook from "../components/EditBook"
+import PublisherForm from "../components/PublisherForm"
+import PublisherRow from "../components/PublisherRow"
 
 const RegisterPage: React.FC<{}> = () => {
   const booksResult = useFetchBooksQuery()
-  const publisherResult = useFetchPublishersQuery()
+  const [fetchPublishers, publisherResult] = useFetchPublishersLazyQuery({
+    fetchPolicy: "network-only",
+  })
+  const [createPublisher, { data }] = useCreatePublisherMutation()
+  useEffect(() => {
+    fetchPublishers()
+  }, [])
   console.log("[RegisterPage] loading", booksResult.loading)
   const history = useHistory()
   console.log("[RegisterPage] updated⭐️")
+
   return (
     <div>
       {!booksResult.data ||
@@ -24,10 +37,26 @@ const RegisterPage: React.FC<{}> = () => {
           <p>{"Nodata..."}</p>
         ) : (
           <div>
-            <p>{publisherResult.data.publishers[0].name}</p>
+            {publisherResult.data.publishers.map((v, i) => (
+              <PublisherRow key={i} {...v} />
+            ))}
           </div>
         )}
       </div>
+      <PublisherForm
+        onSubmit={(name: string, address: string, capital: number) => {
+          createPublisher({
+            variables: {
+              publisher: {
+                name,
+                address,
+                capital,
+              },
+            },
+          })
+          fetchPublishers()
+        }}
+      />
       <div>
         <button onClick={e => history.push("/")}>{"戻る"}</button>
       </div>

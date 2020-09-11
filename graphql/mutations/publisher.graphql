@@ -1,0 +1,8 @@
+mutation CreatePublisher($publisher: PublisherInput!) {
+  createPublisher(input: $publisher) {
+    id
+    name
+    address
+    capital
+  }
+}

@@ -12,6 +12,7 @@ const EditBook: React.FC<Props> = props => {
         <p>title: </p>
         <p>{props.book.title}</p>
       </div>
+      <div></div>
     </div>
   )
 }

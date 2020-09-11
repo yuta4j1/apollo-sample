@@ -31,3 +31,13 @@ type Query {
   books(title: String): [Book]
   publishers: [Publisher]
 }
+
+input PublisherInput {
+  name: String!
+  address: String!
+  capital: Int!
+}
+
+type Mutation {
+  createPublisher(input: PublisherInput!): [Publisher!]
+}

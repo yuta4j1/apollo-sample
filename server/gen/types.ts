@@ -55,6 +55,22 @@ export type QueryBooksArgs = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type PublisherInput = {
+  name: Scalars['String'];
+  address: Scalars['String'];
+  capital: Scalars['Int'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createPublisher?: Maybe<Array<Publisher>>;
+};
+
+
+export type MutationCreatePublisherArgs = {
+  input: PublisherInput;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -142,6 +158,8 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Query: ResolverTypeWrapper<{}>;
+  PublisherInput: PublisherInput;
+  Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -155,6 +173,8 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Query: {};
+  PublisherInput: PublisherInput;
+  Mutation: {};
   Boolean: Scalars['Boolean'];
 };
 
@@ -190,12 +210,17 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   publishers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Publisher']>>>, ParentType, ContextType>;
 };
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createPublisher?: Resolver<Maybe<Array<ResolversTypes['Publisher']>>, ParentType, ContextType, RequireFields<MutationCreatePublisherArgs, 'input'>>;
+};
+
 export type Resolvers<ContextType = any> = {
   AuthorDetail?: AuthorDetailResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
   Publisher?: PublisherResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
 };
 
 
