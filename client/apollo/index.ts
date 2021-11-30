@@ -1,4 +1,9 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client"
+import { ApolloClient, InMemoryCache, ApolloLink, Operation, Observable } from "@apollo/client"
+
+// const anyMiddleware = new ApolloLink((operation: Operation, forward) => {
+//   operation.query.
+
+// })
 
 const cache = new InMemoryCache()
 

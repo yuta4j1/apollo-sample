@@ -5,7 +5,7 @@ const IndexPage: React.FC<{}> = () => {
   return (
     <>
       <div>
-        <h1>{"Apollo Sample"}</h1>
+        <h1>{"Apollo Sample Page"}</h1>
       </div>
       <SomethingList />
     </>

@@ -10,7 +10,7 @@ const Router: React.FC<{}> = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/" component={IndexPage} exact />
-        <Route path="/register" component={RegistertPage} exact />
+        <Route path="/edit" component={RegistertPage} exact />
       </Switch>
     </BrowserRouter>
   )

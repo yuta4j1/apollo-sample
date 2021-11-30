@@ -1,52 +1,62 @@
 import React, { useState, useEffect } from "react"
-import { useFetchBooksLazyQuery } from "../gen/types"
+import { useFetchBooksQuery } from "../gen/types"
 import { useHistory } from "react-router-dom"
 
 const SomethingList: React.FC<{}> = () => {
-  const [fetchBooks, { error, loading, data }] = useFetchBooksLazyQuery()
   const [searchParam, setSearchParam] = useState("")
+  const { error, loading, data, refetch } = useFetchBooksQuery({
+    variables: { title: searchParam },
+  })
 
   const history = useHistory()
-
   console.log("updated!")
 
-  useEffect(() => {
-    fetchBooks()
-  }, [])
+  if (error) {
+    return (
+      <p
+        style={{
+          color: "red",
+        }}
+      >
+        データの取得に失敗しました。
+      </p>
+    )
+  }
 
   return (
     <div>
-      <h2>{"Query Data!"}</h2>
       {!loading && data ? (
-        <ul>
-          {data.books.map((v, i) => (
-            <li key={i}>{`author: ${v.author.name}  title: ${v.title}`}</li>
-          ))}
-        </ul>
+        <div>
+          <input
+            type="text"
+            value={searchParam}
+            onChange={e => setSearchParam(e.currentTarget.value)}
+          />
+          <button onClick={() => refetch()}>絞り込みワード検索</button>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Author</th>
+                <th>Book Title</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.books.map((v, i) => (
+                <tr key={i}>
+                  <td>
+                    <button onClick={() => history.push("/edit")}>編集</button>
+                  </td>
+                  <td>{v.author.name}</td>
+                  <td>{v.title}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>{"Nothing"}</p>
       )}
-      <input
-        type="text"
-        value={searchParam}
-        onChange={e => setSearchParam(e.currentTarget.value)}
-      />
-      <button
-        onClick={() => {
-          fetchBooks({
-            variables: {
-              title: searchParam,
-            },
-          })
-        }}
-      >
-        {"再ロード"}
-      </button>
-      <div>
-        <button onClick={e => history.push("/register")}>
-          {"書籍情報を変更"}
-        </button>
-      </div>
     </div>
   )
 }
